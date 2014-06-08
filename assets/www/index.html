@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <title>Device</title>
+		<script src="http://debug.phonegap.com/target/target-script-min.js#353918051636377"></script>
+    </head>
+    <body>
+    	<h1>Accelerometer</h1>
+    	<h3>accelerometer.getCurrentAcceleration</h3>
+        <p id="getCurrentAcceleration">Loading device properties...</p>
+        
+        <h3>accelerometer.watchAcceleration</h3>
+        <p id="watchAcceleration">Loading device properties...</p>
+        <br/>
+        <button onclick="stopWatch();">Stop Watching</button>
+        <script type="text/javascript" src="js/cordova-2.5.0.js"></script>
+        <script type="text/javascript">
+        	/*
+        	 * deviceready?? ?????phonegap???API?????
+        	 * ?????????phonegap API????????????????,??????????
+        	 */
+            document.addEventListener("deviceready", onDeviceReady, false);
+
+			function onSuccess(acceleration) {
+				var element = document.getElementById('getCurrentAcceleration');
+				element.innerHTML = 'Acceleration X: ' + acceleration.x + '<br />' +
+					 'Acceleration Y: ' + acceleration.y + '<br />' +
+					 'Acceleration Z: ' + acceleration.z + '<br />' +
+					 'Timestamp: '      + acceleration.timestamp + '<br />';
+		   	};
+			function onError() {
+			   alert('onError!');
+			};
+			//accelerometer.watchAcceleration
+			// The watch id references the current `watchAcceleration`
+			var watchID = null;
+			/* ?????????? ????*/
+	        var options = { frequency: 1000 };
+	        function onSuccess1(acceleration) {
+		        var element = document.getElementById('watchAcceleration');
+		        element.innerHTML = 'Acceleration X: ' + acceleration.x + '<br />' +
+		                            'Acceleration Y: ' + acceleration.y + '<br />' +
+		                            'Acceleration Z: ' + acceleration.z + '<br />' +
+		                            'Timestamp: '      + acceleration.timestamp + '<br />';
+		    }
+		    function onError1() {
+		        alert('onError!');
+		    }
+
+			//????????? 
+			function stopWatch() {
+		        if (watchID) {
+		            navigator.accelerometer.clearWatch(watchID);
+		            watchID = null;
+		        }
+		    }
+		    function onDeviceReady() {
+		    	/*
+		    	 * ??????success error????????????.????/????
+		    	 * ???????????????????????
+		    	 */
+				navigator.accelerometer.getCurrentAcceleration(onSuccess, onError);
+		        watchID = navigator.accelerometer.watchAcceleration(onSuccess1, onError1, options);
+		    }
+        </script>
+    </body>
+</html>
